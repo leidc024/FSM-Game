@@ -1,17 +1,25 @@
 body {
     text-align: center;
-    background: #DFDFDF;
+    background: #011F3F;
     margin: 0 30px 100px 30px;
     font: 14px/18px 'Lucida Grande', 'Segoe UI', sans-serif;
 }
 
 h1 {
-    font: bold italic 50px Georgia, serif;
+    'Press Start 2P', cursive;
+    font-size: 3rem;
+    margin: 5%;
+    color: #FEF2BF;
+}
+
+li {
+    color: #FEF2BF;
 }
 
 canvas {
     display: block;
-    max-width: 800px;
+    width: 800px; /* Set the width */
+    height: 400px;
     background: white;
     border-radius: 20px;
     -moz-border-radius: 20px;
@@ -19,7 +27,7 @@ canvas {
 }
 
 a {
-    color: black;
+    color: #FEF2BF;
 }
 
 div {
@@ -39,6 +47,7 @@ div {
 p {
     margin: 30px 0;
     line-height: 20px;
+    color: #FEF2BF;
 }
 
 .center {
@@ -51,3 +60,4 @@ textarea {
     height: 400px;
     margin: 0 auto;
 }
+
