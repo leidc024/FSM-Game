@@ -4,9 +4,9 @@ let SELECTAREA = 10;    // padding either side of transitions for easier selecti
 let FONTSIZE = 16;      // font size for labels
 let EPSILON = String.fromCharCode(949); // epsilon symbol
 let SIGMA = ['a','b', 'c'];  // fsm alphabet
-let STATEFILL = "#fcfcfc" // fill colour of states
+let STATEFILL = "#fdfd96" // fill colour of states
 let BLACK = "#000000"   // black hex code
-let RED = "#ff0000"     // red hex code
+let RED = "#7b1113"     // red hex code
 const nodes = [];       // array of states
 var edges = [];         // array of transitions
 var sid = 0;            // unique state ID
@@ -15,6 +15,7 @@ var highSid = -1;       // ID of highlighted state
 var highTid = -1;       // ID of highlighted transition
 var startSid = -1;      // ID of start state
 var startTid = -1;      // ID of start transition
+
 
 class Regex {
 
@@ -323,7 +324,7 @@ class Edge {
             ctx.fillText(this.label, x3, y3-4);
             ctx.stroke();
 
-            ctx.fillStyle = STATEFILL
+            ctx.fillStyle = STA;
         } else if (this.curved) { // curved edge between nodes
             var x1 = this.fromNode.x;
             var y1 = this.fromNode.y;
