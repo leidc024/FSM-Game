@@ -1,12 +1,16 @@
-function checkRegex() {
-    // Get the value of the input field
-    var regex = document.getElementById('regexInput').value;
 
-    // Validate the regular expression
-    try {
-        new RegExp(regex);
-        alert('Valid regular expression!');
-    } catch (e) {
-        alert('Invalid regular expression: ' + e.message);
+    function toggleInstructions() {
+        // Get the instruction menu element
+        var instructionMenu = document.getElementById("instructionMenu");
+
+        // Show the instruction menu by setting its display style to "block"
+        instructionMenu.style.display = "block";
     }
-}
+
+    function closeInstructions() {
+        // Get the instruction menu element
+        var instructionMenu = document.getElementById("instructionMenu");
+
+        // Hide the instruction menu by setting its display style to "none"
+        instructionMenu.style.display = "none";
+    }
