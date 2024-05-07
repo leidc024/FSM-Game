@@ -312,7 +312,7 @@ class Edge {
 
             ctx.strokeStyle = BLACK; // revert colour to black
 
-            ctx.fillStyle = STATEFILL;
+            ctx.fillStyle = ALTFILL;
 
             var width = ctx.measureText(this.label).width;
 
@@ -374,7 +374,7 @@ class Edge {
             ctx.strokeStyle = BLACK; // revert colour to black
 
             // draw the label at the third point that was created
-            ctx.fillStyle = STATEFILL;
+            ctx.fillStyle = ALTFILL;
 
             var width = ctx.measureText(this.label).width;
 
@@ -430,7 +430,7 @@ class Edge {
             ctx.fill();
 
             ctx.strokeStyle = BLACK; // revert colour to black
-            ctx.fillStyle = ALTFILL;
+            ctx.fillStyle = STATEFILL;
 
             if (this.fromNode != null) {
 
