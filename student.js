@@ -5,7 +5,6 @@ let FONTSIZE = 16;      // font size for labels
 let EPSILON = String.fromCharCode(949); // epsilon symbol
 let SIGMA = ['a', 'b'];  // fsm alphabet
 let STATEFILL = "#fdfd96" // fill colour of states
-let ALTFILL = "#ffffff" // alternate color as needed
 let BLACK = "#000000"   // black hex code
 let RED = "#7b1113"     // red hex code
 const nodes = [];       // array of states
@@ -430,7 +429,7 @@ class Edge {
             ctx.fill();
 
             ctx.strokeStyle = BLACK; // revert colour to black
-            ctx.fillStyle = ALTFILL;
+            ctx.fillStyle = STATEFILL;
 
             if (this.fromNode != null) {
 
