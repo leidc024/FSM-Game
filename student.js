@@ -5,6 +5,7 @@ let FONTSIZE = 16;      // font size for labels
 let EPSILON = String.fromCharCode(949); // epsilon symbol
 let SIGMA = ['a', 'b'];  // fsm alphabet
 let STATEFILL = "#fdfd96" // fill colour of states
+let ALTFILL = "#ffffff" // alternate color as needed
 let BLACK = "#000000"   // black hex code
 let RED = "#7b1113"     // red hex code
 const nodes = [];       // array of states
@@ -311,7 +312,7 @@ class Edge {
 
             ctx.strokeStyle = BLACK; // revert colour to black
 
-            ctx.fillStyle = STATEFILL;
+            ctx.fillStyle = ALTFILL;
 
             var width = ctx.measureText(this.label).width;
 
@@ -323,7 +324,7 @@ class Edge {
             ctx.fillText(this.label, x3, y3 - 4);
             ctx.stroke();
 
-            ctx.fillStyle = STATEFILL
+            ctx.fillStyle = ALTFILL
         } else if (this.curved) { // curved edge between nodes
             var x1 = this.fromNode.x;
             var y1 = this.fromNode.y;
@@ -373,7 +374,7 @@ class Edge {
             ctx.strokeStyle = BLACK; // revert colour to black
 
             // draw the label at the third point that was created
-            ctx.fillStyle = STATEFILL;
+            ctx.fillStyle = ALTFILL;
 
             var width = ctx.measureText(this.label).width;
 
@@ -385,7 +386,7 @@ class Edge {
             ctx.fillText(this.label, x3, y3);
             ctx.stroke();
 
-            ctx.fillStyle = STATEFILL;
+            ctx.fillStyle = ALTFILL;
         } else {
             if (this.id == startTid) { // start edge
                 var toX = this.toNode.x - RADIUS;
@@ -429,7 +430,7 @@ class Edge {
             ctx.fill();
 
             ctx.strokeStyle = BLACK; // revert colour to black
-            ctx.fillStyle = STATEFILL;
+            ctx.fillStyle = ALTFILL;
 
             if (this.fromNode != null) {
 
