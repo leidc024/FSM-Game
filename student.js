@@ -1,9 +1,9 @@
 let RADIUS = 40;        // state radius
-let CHEVRON = RADIUS/4; // length of transition chevron
+let CHEVRON = RADIUS / 4; // length of transition chevron
 let SELECTAREA = 10;    // padding either side of transitions for easier selection
 let FONTSIZE = 16;      // font size for labels
 let EPSILON = String.fromCharCode(949); // epsilon symbol
-let SIGMA = ['a','b'];  // fsm alphabet
+let SIGMA = ['a', 'b'];  // fsm alphabet
 let STATEFILL = "#fdfd96" // fill colour of states
 let BLACK = "#000000"   // black hex code
 let RED = "#7b1113"     // red hex code
@@ -15,7 +15,6 @@ var highSid = -1;       // ID of highlighted state
 var highTid = -1;       // ID of highlighted transition
 var startSid = -1;      // ID of start state
 var startTid = -1;      // ID of start transition
-
 
 class Regex {
 
@@ -59,7 +58,7 @@ class Regex {
         var c2 = 0;     // ID of another state to add to NFA
 
         // Iterate through each character in the postfix regex
-        for (var i=0; i<regex.length; i++) {
+        for (var i = 0; i < regex.length; i++) {
             if (regex[i] == '*') { // Kleene star operator
                 // Pop last pair of states from stack (sub-NFA)
                 var top = s.pop();
@@ -129,7 +128,7 @@ class Regex {
                 var r21 = top2[0];
                 var r22 = top2[1];
                 // Push new states to stack
-                s.push([c1,c2]);
+                s.push([c1, c2]);
                 // Traverse to second sub-NFA or first sub-NFA
                 nfa[c1][EPSILON].push(r21, r11);
                 // Continue from end of first sub-NFA
@@ -156,16 +155,16 @@ class Regex {
                 nfa[c1][EPSILON] = [];
                 nfa[c2][EPSILON] = []
                 // Push new states onto stack
-                s.push([c1,c2]);
+                s.push([c1, c2]);
                 // Connect the first state to the second via the symbol
                 nfa[c1][regex[i]].push(c2);
             }
         }
 
         return {
-            "table" : nfa,
-            "start" : start,
-            "end" : end
+            "table": nfa,
+            "start": start,
+            "end": end
         }
     }
 
@@ -209,16 +208,16 @@ class Regex {
         } else if (Math.random() <= probEmpty) { // use epsilon with probability probEmpty
             this.postfix += EPSILON;
             // Generate smaller sub-expression
-            var after = this.#kleene(n-1, probOr, probKleene, probEmpty);
+            var after = this.#kleene(n - 1, probOr, probKleene, probEmpty);
             this.postfix += "+";
             return "(" + EPSILON + " + " + after + ")";
         }
 
-        var beforeSize = Math.floor(n/2);
+        var beforeSize = Math.floor(n / 2);
 
         // Generate two sub-expressions
         var before = this.#kleene(beforeSize, probOr, probKleene, probEmpty);
-        var after = this.#kleene(n-beforeSize, probOr, probKleene, probEmpty);
+        var after = this.#kleene(n - beforeSize, probOr, probKleene, probEmpty);
 
         // Apply Or operator between the two with probability probOr
         if (Math.random() <= probOr) {
@@ -271,21 +270,21 @@ class Edge {
         ctx.beginPath();
 
         if (this.fromNode == this.toNode) { // self loop
-            this.angle = 5*Math.PI/16;
-            var dx = Math.cos(this.angle)*RADIUS;
-            var dy = Math.sin(this.angle)*RADIUS;
+            this.angle = 5 * Math.PI / 16;
+            var dx = Math.cos(this.angle) * RADIUS;
+            var dy = Math.sin(this.angle) * RADIUS;
             var xn = this.fromNode.x;
             var yn = this.fromNode.y;
 
             // Start of arc
-            var x1 = xn-dx;
-            var y1 = yn-dy;
+            var x1 = xn - dx;
+            var y1 = yn - dy;
             // End of arc
-            var x2 = xn+dx;
-            var y2 = yn-dy;
+            var x2 = xn + dx;
+            var y2 = yn - dy;
             // Arc turning point
             var x3 = xn;
-            var y3 = yn-1.7*RADIUS;
+            var y3 = yn - 1.7 * RADIUS;
 
             // Find circle equation from three points (above)
             var circle = circleFromPoints(x1, y1, x2, y2, x3, y3);
@@ -295,17 +294,17 @@ class Edge {
             this.radius = circle.radius;
 
             // Angle between arc centre and end of arc
-            var alpha = Math.atan2(y2-this.y, x2-this.x); 
+            var alpha = Math.atan2(y2 - this.y, x2 - this.x);
 
             ctx.beginPath();
-            ctx.arc(this.x, this.y, this.radius, Math.PI-alpha, alpha); // arc is drawn outside of node area
+            ctx.arc(this.x, this.y, this.radius, Math.PI - alpha, alpha); // arc is drawn outside of node area
             ctx.stroke();
 
             // Draw chevron at end of arc
             ctx.beginPath();
             ctx.moveTo(x2, y2);
-            ctx.lineTo(x2+CHEVRON*Math.cos(this.angle-Math.PI/10), y2-CHEVRON*Math.sin(this.angle-Math.PI/10));
-            ctx.lineTo(x2-CHEVRON*Math.cos(this.angle+Math.PI/10), y2-CHEVRON*Math.sin(this.angle+Math.PI/10));
+            ctx.lineTo(x2 + CHEVRON * Math.cos(this.angle - Math.PI / 10), y2 - CHEVRON * Math.sin(this.angle - Math.PI / 10));
+            ctx.lineTo(x2 - CHEVRON * Math.cos(this.angle + Math.PI / 10), y2 - CHEVRON * Math.sin(this.angle + Math.PI / 10));
             ctx.closePath();
             ctx.stroke();
             ctx.fill();
@@ -313,18 +312,18 @@ class Edge {
             ctx.strokeStyle = BLACK; // revert colour to black
 
             ctx.fillStyle = STATEFILL;
-                
+
             var width = ctx.measureText(this.label).width;
 
-            ctx.fillRect(x3-width/2, y3-4-FONTSIZE+2, width, FONTSIZE+2);
+            ctx.fillRect(x3 - width / 2, y3 - 4 - FONTSIZE + 2, width, FONTSIZE + 2);
 
             ctx.fillStyle = BLACK;
 
             ctx.beginPath();
-            ctx.fillText(this.label, x3, y3-4);
+            ctx.fillText(this.label, x3, y3 - 4);
             ctx.stroke();
 
-            ctx.fillStyle = STA;
+            ctx.fillStyle = STATEFILL
         } else if (this.curved) { // curved edge between nodes
             var x1 = this.fromNode.x;
             var y1 = this.fromNode.y;
@@ -332,13 +331,13 @@ class Edge {
             var x2 = this.toNode.x;
             var y2 = this.toNode.y;
 
-            var dx = x1-x2;
-            var dy = y1-y2;
-            
+            var dx = x1 - x2;
+            var dy = y1 - y2;
+
             this.angle = Math.atan2(dy, dx);
 
-            var x3 = 0.5*(x1+x2) + 2*SELECTAREA*Math.cos(this.angle - Math.PI/2);
-            var y3 = 0.5*(y1+y2) + 2*SELECTAREA*Math.sin(this.angle - Math.PI/2);
+            var x3 = 0.5 * (x1 + x2) + 2 * SELECTAREA * Math.cos(this.angle - Math.PI / 2);
+            var y3 = 0.5 * (y1 + y2) + 2 * SELECTAREA * Math.sin(this.angle - Math.PI / 2);
 
             // create circle using three points
             var circle = circleFromPoints(x1, y1, x2, y2, x3, y3);
@@ -347,26 +346,26 @@ class Edge {
             var yc = circle.y;
 
             // only draw section between nodes
-            var startAngle = Math.atan2(y2-yc, x2-xc);
-            var endAngle = Math.atan2(y1-yc, x1-xc);
+            var startAngle = Math.atan2(y2 - yc, x2 - xc);
+            var endAngle = Math.atan2(y1 - yc, x1 - xc);
 
             ctx.beginPath();
             ctx.arc(xc, yc, circle.radius, startAngle, endAngle);
             ctx.stroke();
 
             // get coords of arc intersection with 'to' node
-            var alpha = Math.acos(RADIUS/(2*circle.radius)) - startAngle + Math.PI;
+            var alpha = Math.acos(RADIUS / (2 * circle.radius)) - startAngle + Math.PI;
 
-            var xi = x2 + RADIUS*Math.cos(alpha);
-            var yi = y2 - RADIUS*Math.sin(alpha);
+            var xi = x2 + RADIUS * Math.cos(alpha);
+            var yi = y2 - RADIUS * Math.sin(alpha);
 
-            var beta = Math.atan2(yi-y2,xi-x2);
-            
+            var beta = Math.atan2(yi - y2, xi - x2);
+
             // dynamically draw chevron
             ctx.beginPath();
             ctx.moveTo(xi, yi);
-            ctx.lineTo(xi+CHEVRON*Math.cos(beta-Math.PI/5), yi+CHEVRON*Math.sin(beta-Math.PI/5));
-            ctx.lineTo(xi+CHEVRON*Math.cos(beta+Math.PI/5), yi+CHEVRON*Math.sin(beta+Math.PI/5));
+            ctx.lineTo(xi + CHEVRON * Math.cos(beta - Math.PI / 5), yi + CHEVRON * Math.sin(beta - Math.PI / 5));
+            ctx.lineTo(xi + CHEVRON * Math.cos(beta + Math.PI / 5), yi + CHEVRON * Math.sin(beta + Math.PI / 5));
             ctx.closePath();
             ctx.stroke();
             ctx.fill();
@@ -375,10 +374,10 @@ class Edge {
 
             // draw the label at the third point that was created
             ctx.fillStyle = STATEFILL;
-                
+
             var width = ctx.measureText(this.label).width;
 
-            ctx.fillRect(x3-width/2, y3-FONTSIZE+2, width, FONTSIZE+2);
+            ctx.fillRect(x3 - width / 2, y3 - FONTSIZE + 2, width, FONTSIZE + 2);
 
             ctx.fillStyle = BLACK;
 
@@ -389,9 +388,9 @@ class Edge {
             ctx.fillStyle = STATEFILL;
         } else {
             if (this.id == startTid) { // start edge
-                var toX = this.toNode.x-RADIUS;
+                var toX = this.toNode.x - RADIUS;
                 var toY = this.toNode.y;
-                var fromX = toX-RADIUS;
+                var fromX = toX - RADIUS;
                 var fromY = toY;
                 var dx = RADIUS;
                 var dy = 0;
@@ -403,15 +402,15 @@ class Edge {
                 var fromY = this.fromNode.y;
 
                 // Calculates line angle between centres of each node
-                var dx = toX-fromX;
-                var dy = toY-fromY;
+                var dx = toX - fromX;
+                var dy = toY - fromY;
                 this.angle = Math.atan2(dy, dx);
 
                 // 'Remove' portion of edge contained within nodes
-                fromX += Math.cos(this.angle)*RADIUS;
-                fromY += Math.sin(this.angle)*RADIUS;
-                toX -= Math.cos(this.angle)*RADIUS;
-                toY -= Math.sin(this.angle)*RADIUS;
+                fromX += Math.cos(this.angle) * RADIUS;
+                fromY += Math.sin(this.angle) * RADIUS;
+                toX -= Math.cos(this.angle) * RADIUS;
+                toY -= Math.sin(this.angle) * RADIUS;
             }
 
             // Draw connecting line
@@ -423,8 +422,8 @@ class Edge {
             // Draw chevron at end of edge
             ctx.beginPath();
             ctx.moveTo(toX, toY);
-            ctx.lineTo(toX-CHEVRON*Math.cos(this.angle - Math.PI/6), toY-CHEVRON*Math.sin(this.angle - Math.PI/6));
-            ctx.lineTo(toX-CHEVRON*Math.cos(this.angle + Math.PI/6), toY-CHEVRON*Math.sin(this.angle + Math.PI/6));
+            ctx.lineTo(toX - CHEVRON * Math.cos(this.angle - Math.PI / 6), toY - CHEVRON * Math.sin(this.angle - Math.PI / 6));
+            ctx.lineTo(toX - CHEVRON * Math.cos(this.angle + Math.PI / 6), toY - CHEVRON * Math.sin(this.angle + Math.PI / 6));
             ctx.closePath();
             ctx.stroke();
             ctx.fill();
@@ -439,7 +438,7 @@ class Edge {
                 var x = (this.fromNode.x + this.toNode.x) / 2;
                 var y = (this.fromNode.y + this.toNode.y) / 2;
 
-                ctx.fillRect(x-width/2, y-FONTSIZE+2, width, FONTSIZE+2);
+                ctx.fillRect(x - width / 2, y - FONTSIZE + 2, width, FONTSIZE + 2);
 
                 ctx.fillStyle = BLACK;
 
@@ -477,14 +476,14 @@ class Node {
 
         // Draw state
         ctx.beginPath();
-        ctx.arc(this.x, this.y, RADIUS, 0, 2*Math.PI);
+        ctx.arc(this.x, this.y, RADIUS, 0, 2 * Math.PI);
         ctx.fill();
         ctx.stroke();
 
         // Draw smaller circle inside to denote accept state
         if (this.accept) {
             ctx.beginPath();
-            ctx.arc(this.x, this.y, RADIUS-8, 0, 2*Math.PI);
+            ctx.arc(this.x, this.y, RADIUS - 8, 0, 2 * Math.PI);
             ctx.fill();
             ctx.stroke();
         }
@@ -493,7 +492,7 @@ class Node {
 
         ctx.fillStyle = BLACK;
         ctx.beginPath();
-        ctx.fillText(this.label, this.x, this.y+5);
+        ctx.fillText(this.label, this.x, this.y + 5);
         ctx.stroke();
 
         ctx.fillStyle = STATEFILL;
@@ -729,7 +728,7 @@ function subsetConstruct(nfa, start, final, dfaId) {
 
     // Initialise a queue of state subsets to process
     const nodeQueue = [firstState];
-    
+
     while (nodeQueue.length > 0) {
         // Dequeue next state subset
         var currentState = nodeQueue.shift();
@@ -760,9 +759,9 @@ function subsetConstruct(nfa, start, final, dfaId) {
     }
 
     return {
-        dfa : dfa,
-        start : begin,
-        accept : accept
+        dfa: dfa,
+        start: begin,
+        accept: accept
     }
 }
 
@@ -796,7 +795,7 @@ function nodeSubset(states, symbol, nodeClosure, nfa) {
             }
         }
     }
-    var nodeIds  = [];
+    var nodeIds = [];
     for (var n of subset.values()) {
         nodeIds.push(n);
     }
@@ -865,9 +864,9 @@ function close(k, nodeClosure, nClosed, nfa) {
             // For each state immediately reachable via epsilon transitions from state k
             for (var q of nfa[k][EPSILON]) {
                 // If state q not in E-CLOSE(n)
-                if (!nClosed.has(q)) { 
+                if (!nClosed.has(q)) {
                     // Add each state from E-CLOSE(q) to E-CLOSE(n)
-                    for (var p of close(q, nodeClosure, nClosed, nfa)) { 
+                    for (var p of close(q, nodeClosure, nClosed, nfa)) {
                         nClosed.add(p);
                     }
                 }
@@ -875,7 +874,7 @@ function close(k, nodeClosure, nClosed, nfa) {
         }
     } else { // if E-CLOSE(k) already calculated
         // Add each state from E-CLOSE(k) to E-CLOSE(n)
-        for (var q of nodeClosure[k]) { 
+        for (var q of nodeClosure[k]) {
             nClosed.add(q);
         }
     }
@@ -954,8 +953,8 @@ function transTable() {
     }
 
     return {
-        table : nfa,
-        accept : final
+        table: nfa,
+        accept: final
     }
 }
 
@@ -977,17 +976,17 @@ function transTable() {
  */
 function circleFromPoints(x1, y1, x2, y2, x3, y3) {
     // Find circle equation from three points (above)
-    var a = x1*(y2-y3)-y1*(x2-x3)+x2*y3-x3*y2;
-    var b = (x1**2+y1**2)*(y3-y2)+(x2**2+y2**2)*(y1-y3)+(x3**2+y3**2)*(y2-y1);
-    var c = (x1**2+y1**2)*(x2-x3)+(x2**2+y2**2)*(x3-x1)+(x3**2+y3**2)*(x1-x2);
+    var a = x1 * (y2 - y3) - y1 * (x2 - x3) + x2 * y3 - x3 * y2;
+    var b = (x1 ** 2 + y1 ** 2) * (y3 - y2) + (x2 ** 2 + y2 ** 2) * (y1 - y3) + (x3 ** 2 + y3 ** 2) * (y2 - y1);
+    var c = (x1 ** 2 + y1 ** 2) * (x2 - x3) + (x2 ** 2 + y2 ** 2) * (x3 - x1) + (x3 ** 2 + y3 ** 2) * (x1 - x2);
 
-    var x = -b/(2*a); // x centre
-    var y = -c/(2*a); // y centre
+    var x = -b / (2 * a); // x centre
+    var y = -c / (2 * a); // y centre
 
     return {
-        'x' : x,
-        'y' : y,
-        'radius' : Math.hypot(x-x1, y-y1)
+        'x': x,
+        'y': y,
+        'radius': Math.hypot(x - x1, y - y1)
     }
 }
 
@@ -998,7 +997,7 @@ function circleFromPoints(x1, y1, x2, y2, x3, y3) {
  * @returns {Number} Index of state/edge
  */
 function getFromId(id, arr) {
-    for (var i=0; i<arr.length; i++) {
+    for (var i = 0; i < arr.length; i++) {
         if (arr[i].id == id) {
             return i;
         }
@@ -1014,14 +1013,14 @@ function getFromId(id, arr) {
  */
 function edgeUnderMouse(xm, ym) {
     // For each edge
-    for (var i=edges.length-1; i >=0; i--) {
+    for (var i = edges.length - 1; i >= 0; i--) {
         var edge = edges[i];
         if (edge.id != startTid) { // ignore start edge
             if (edge.fromNode == edge.toNode) { // self-loop
-                var dx = edge.x-xm;
-                var dy = edge.y-ym;
+                var dx = edge.x - xm;
+                var dy = edge.y - ym;
                 // If cursor contained within area of self-loop
-                if (dx*dx+dy*dy < (edge.radius+SELECTAREA)*(edge.radius+SELECTAREA)) {
+                if (dx * dx + dy * dy < (edge.radius + SELECTAREA) * (edge.radius + SELECTAREA)) {
                     return i;
                 }
             } else { // normal transition
@@ -1031,18 +1030,18 @@ function edgeUnderMouse(xm, ym) {
                 var yt = edge.toNode.y;
                 var dx = xt - xf;
                 var dy = yt - yf;
-                var len = Math.sqrt(dx*dx+dy*dy);
+                var len = Math.sqrt(dx * dx + dy * dy);
                 if (edge.curved) { // curved transition
-                    var ang = 1.5*Math.PI-edge.angle;
-                    var cosShift = 2*SELECTAREA*Math.cos(ang);
-                    var sinShift = 2*SELECTAREA*Math.sin(ang);
+                    var ang = 1.5 * Math.PI - edge.angle;
+                    var cosShift = 2 * SELECTAREA * Math.cos(ang);
+                    var sinShift = 2 * SELECTAREA * Math.sin(ang);
                     // Shifts selection window accordingly
-                    var perc = (dx*(xm-xf+cosShift)+dy*(ym-yf-sinShift))/(len*len);
-                    var dist = (dx*(ym-yf-sinShift)-dy*(xm-xf+cosShift))/len;
+                    var perc = (dx * (xm - xf + cosShift) + dy * (ym - yf - sinShift)) / (len * len);
+                    var dist = (dx * (ym - yf - sinShift) - dy * (xm - xf + cosShift)) / len;
                 } else { // straight transition
                     // Regular selection window for transition
-                    var perc = (dx*(xm-xf)+dy*(ym-yf))/(len*len); // how far along transition the mouse is (parallel proportion)
-                    var dist = (dx*(ym-yf)-dy*(xm-xf))/len; // perpendicular distance mouse is away from line equation of transition
+                    var perc = (dx * (xm - xf) + dy * (ym - yf)) / (len * len); // how far along transition the mouse is (parallel proportion)
+                    var dist = (dx * (ym - yf) - dy * (xm - xf)) / len; // perpendicular distance mouse is away from line equation of transition
                 }
                 // If cursor within selection area
                 if (perc > 0 && perc < 1 && Math.abs(dist) < SELECTAREA) {
@@ -1063,12 +1062,12 @@ function edgeUnderMouse(xm, ym) {
  * @returns {Number} Index of node, or -1 if no node present
  */
 function nodeUnderMouse(x, y) {
-    for (var i=nodes.length-1; i >= 0; i--) {
+    for (var i = nodes.length - 1; i >= 0; i--) {
         var node = nodes[i];
-        var dx = node.x-x;
-        var dy = node.y-y;
+        var dx = node.x - x;
+        var dy = node.y - y;
         // Use Pythagoras' Theorem to check if mouse is within node's area
-        if (dx*dx+dy*dy < RADIUS*RADIUS) {
+        if (dx * dx + dy * dy < RADIUS * RADIUS) {
             return i;
         }
     }
@@ -1089,8 +1088,8 @@ function coordinates(event) {
     var dimensions = canvas.getBoundingClientRect();
     // Account for canvas offset by subtracting its top most- and left most-position in window
     return {
-        x: event.clientX-dimensions.left,
-        y: event.clientY-dimensions.top
+        x: event.clientX - dimensions.left,
+        y: event.clientY - dimensions.top
     }
 }
 
@@ -1104,14 +1103,14 @@ function updateCanvas(mouseDown) {
         ctx.clearRect(0, 0, canvas.width, canvas.height); // clear canvas
 
         // Draw edges
-        for (var i=0; i<edges.length; i++) {
+        for (var i = 0; i < edges.length; i++) {
             if (edges[i].id != startTid) {
                 edges[i].draw(ctx);
             }
         }
 
         // Draw nodes
-        for (var j=0; j<nodes.length; j++) {
+        for (var j = 0; j < nodes.length; j++) {
             nodes[j].draw(ctx);
             // Draw start edge
             if (nodes[j].id == startSid) {
@@ -1211,7 +1210,7 @@ var state = null;
  * Pressing a key
  */
 window.addEventListener("keydown",
-    function(event){
+    function (event) {
 
         // State/Edge to add label to
         var addLabel = null;
@@ -1229,19 +1228,19 @@ window.addEventListener("keydown",
             // Length of current label
             var length = addLabel.label.length;
             // Convert '\e' into EPSILON if read, else add character
-            if (length > 0 && length < 7 && addLabel.label[length-1] == '\\' && event.key == 'e') {
-                addLabel.label = addLabel.label.slice(0,-1) + EPSILON;
+            if (length > 0 && length < 7 && addLabel.label[length - 1] == '\\' && event.key == 'e') {
+                addLabel.label = addLabel.label.slice(0, -1) + EPSILON;
             } else if (length < 6) {
                 addLabel.label += event.key;
             }
         } else if (event.key == "Backspace") { // delete last character
-            addLabel.label = addLabel.label.slice(0,-1);
+            addLabel.label = addLabel.label.slice(0, -1);
         } else if (event.key == "Delete") { // delete highlighted State/Edge
             if (highSid != -1) { // state selected
                 // Create new edge set
                 var new_edges = [];
                 // Only include edges not adjacent to selected node
-                for (var i=0; i<edges.length; i++) {
+                for (var i = 0; i < edges.length; i++) {
                     if (edges[i].fromNode == nodes[index] || edges[i].toNode == nodes[index]) {
                         if (edges[i].id == startTid) {
                             startTid = -1;
@@ -1255,20 +1254,20 @@ window.addEventListener("keydown",
                     startSid = -1;
                 }
                 // Remove state
-                nodes.splice(index,1);
+                nodes.splice(index, 1);
                 highSid = -1;
             } else if (highTid != -1) { // edge selected
                 if (edges[index].id == startTid) {
                     startTid = -1;
                 }
-                for (var i=0; i<edges.length; i++) {
+                for (var i = 0; i < edges.length; i++) {
                     // If selected edge curved, remove curved property of other curved edge
                     if (edges[i].fromNode == edges[index].toNode && edges[i].toNode == edges[index].fromNode) {
                         edges[i].curved = false;
                         break;
                     }
                 }
-                edges.splice(index,1);
+                edges.splice(index, 1);
                 highTid = -1;
             }
         } else if (event.key == "Escape") {
@@ -1284,7 +1283,7 @@ window.addEventListener("keydown",
  * Double-clicking on the canvas
  */
 canvas.addEventListener("dblclick",
-    function(event) {
+    function (event) {
 
         // Get mouse coordinates
         var coords = coordinates(event);
@@ -1328,7 +1327,7 @@ canvas.addEventListener("dblclick",
                     tid++;
                 } else {
                     // Set existing start edge to point at this node
-                    for (var i=0; i<edges.length; i++) {
+                    for (var i = 0; i < edges.length; i++) {
                         if (edges[i].id == startTid) {
                             edges[i].toNode = nodes[getFromId(highSid, nodes)];
                             break;
@@ -1353,7 +1352,7 @@ canvas.addEventListener("dblclick",
  * Mouse clicked
  */
 canvas.addEventListener("mousedown",
-    function(event) {
+    function (event) {
 
         // Get mouse coordinates
         var coords = coordinates(event);
@@ -1370,7 +1369,7 @@ canvas.addEventListener("mousedown",
                     var from = nodes[getFromId(highSid, nodes)];
                     var create = true;
                     var curve = false;
-                    for (var i=0; i<edges.length; i++) {
+                    for (var i = 0; i < edges.length; i++) {
                         // If edge already exists between nodes, do not create a new one
                         if (create && edges[i].fromNode == from && edges[i].toNode == nodes[stateIndex]) {
                             create = false;
@@ -1403,7 +1402,7 @@ canvas.addEventListener("mousedown",
                     tid++;
                 } else {
                     // Set start edge to point at this node
-                    for (var i=0; i<edges.length; i++) {
+                    for (var i = 0; i < edges.length; i++) {
                         if (edges[i].id == startTid) {
                             edges[i].toNode = nodes[getFromId(highSid, nodes)];
                             break;
@@ -1423,7 +1422,7 @@ canvas.addEventListener("mousedown",
             var edge = edges[edgeIndex];
             highTid = edge.id;
             highSid = -1;
-        } 
+        }
         updateCanvas(true);
     }
 );
@@ -1432,11 +1431,11 @@ canvas.addEventListener("mousedown",
  * Mouse moving over canvas
  */
 canvas.addEventListener("mousemove",
-    function(event) {
+    function (event) {
         var coords = coordinates(event); // get mouse coordinates
         var x = coords.x;
         var y = coords.y;
-        var stateId = nodeUnderMouse(x,y);
+        var stateId = nodeUnderMouse(x, y);
 
         // Change look of mouse if hovering over state
         if (stateId != -1) {
@@ -1446,8 +1445,8 @@ canvas.addEventListener("mousemove",
         }
 
         // Calculate change in mouse position
-        var dx = x-fromX;
-        var dy = y-fromY;
+        var dx = x - fromX;
+        var dy = y - fromY;
         fromX = x;
         fromY = y;
 
@@ -1463,7 +1462,7 @@ canvas.addEventListener("mousemove",
  * Mouse click released
  */
 canvas.addEventListener("mouseup",
-    function(){
+    function () {
         // If canvas nonempty and dragging state
         if (state && state.dragging) {
             // Stop dragging state
