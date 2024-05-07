@@ -312,7 +312,7 @@ class Edge {
 
             ctx.strokeStyle = BLACK; // revert colour to black
 
-            ctx.fillStyle = ALTFILL;
+            ctx.fillStyle = STATEFILL;
 
             var width = ctx.measureText(this.label).width;
 
@@ -324,7 +324,7 @@ class Edge {
             ctx.fillText(this.label, x3, y3 - 4);
             ctx.stroke();
 
-            ctx.fillStyle = ALTFILL
+            ctx.fillStyle = STATEFILL
         } else if (this.curved) { // curved edge between nodes
             var x1 = this.fromNode.x;
             var y1 = this.fromNode.y;
@@ -374,7 +374,7 @@ class Edge {
             ctx.strokeStyle = BLACK; // revert colour to black
 
             // draw the label at the third point that was created
-            ctx.fillStyle = ALTFILL;
+            ctx.fillStyle = STATEFILL;
 
             var width = ctx.measureText(this.label).width;
 
@@ -386,7 +386,7 @@ class Edge {
             ctx.fillText(this.label, x3, y3);
             ctx.stroke();
 
-            ctx.fillStyle = ALTFILL;
+            ctx.fillStyle = STATEFILL;
         } else {
             if (this.id == startTid) { // start edge
                 var toX = this.toNode.x - RADIUS;
