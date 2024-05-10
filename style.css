@@ -1,63 +1,11 @@
-body {
-    text-align: center;
-    background: #011F3F;
-    margin: 0 30px 100px 30px;
-    font: 14px/18px 'Lucida Grande', 'Segoe UI', sans-serif;
+h1,h2,div.centre {
+  text-align: center;
 }
 
-h1 {
-    'Press Start 2P', cursive;
-    font-size: 3rem;
-    margin: 5%;
-    color: #FEF2BF;
+.no-select {
+  user-select: none;
 }
 
-li {
-    color: #FEF2BF;
+#flat-canvas{
+  display: none;
 }
-
-canvas {
-    display: block;
-    width: 800px; /* Set the width */
-    height: 400px;
-    background: white;
-    border-radius: 20px;
-    -moz-border-radius: 20px;
-    margin: 10px auto;
-}
-
-a {
-    color: #FEF2BF;
-}
-
-div {
-    margin: 30px auto;
-    text-align: left;
-    max-width: 800px;
-}
-
-.error {
-    display: block;
-    color: red;
-    font-size: 28px;
-    line-height: 30px;
-    padding: 30px;
-}
-
-p {
-    margin: 30px 0;
-    line-height: 20px;
-    color: #FEF2BF;
-}
-
-.center {
-    text-align: center;
-}
-
-textarea {
-    display: none;
-    width: 75%;
-    height: 400px;
-    margin: 0 auto;
-}
-
