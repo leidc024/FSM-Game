@@ -157,7 +157,12 @@
                 Dive into the world of FSMs and discover their practical applications with ease.
             </p>
             <div class="d-grid gap-2 d-sm-flex justify-content-sm-center mb-5">
-                <a href="./student.html" class="btn btn-dark btn-lg px-4 me-sm-3" onclick="">Start Game</a>
+                <a href="./student.html" class="btn btn-dark btn-lg px-4 me-sm-3" onclick="
+                    if(!regexArr.length){
+                        alert('No regex uploaded');
+                        return false;
+                    }
+                    ">Start Game</a>
                 <button class="btn btn-light btn-lg px-4 me-sm-3" type="button" onclick="toggleInstructions()">Instructions</button>
                 <!-- Added onclick event to call JavaScript function -->
             </div>
