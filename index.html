@@ -125,7 +125,13 @@
 
 
                     <button class="btn btn-outline-dark" onclick="
-                             addNewRegex();
+                        try{
+                            addNewRegex();
+                            alert('Regex Uploaded')
+                        }
+                        catch{
+                            alert('ERROR BOI');
+                        }
                     ">
                         Upload
                     </button>
