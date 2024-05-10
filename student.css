@@ -15,8 +15,8 @@ h1 {
 
 canvas {
     display: block;
-    width: 800px; /* Set the width */
-    height: 400px;
+    width: 1250px; /* Set the width */
+    height: 625px;
     background: white;
     border-radius: 20px;
     -moz-border-radius: 20px;

@@ -12,17 +12,20 @@
         body {
             background-color: #003366; /* Dark blue background color */
             color: white; /* Text color */
+            position: relative; /* Positioning for absolute elements */
         }
         .content-container {
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            height: 100vh; /* Full viewport height */
+            height: 120vh; /* Full viewport height */
+            overflow-y: auto; /* Add vertical scroll if content exceeds viewport */
         }
         .content {
             text-align: center;
             width: 80%; /* Adjust width as needed */
+            position: relative; /* Positioning for absolute elements */
         }
         .btn-group {
             margin-top: 20px; /* Space above Generate New Regex button */
@@ -30,6 +33,38 @@
         }
         .btn-group-checkbox {
             margin-top: 10px; /* Space between Check Equivalence button and Force DFA Constraint */
+        }
+        .styled-redirects {
+            margin-top: 20px; /* Space above styled redirects */
+        }
+        .score-checker {
+            position: absolute;
+            top: 20px; /* Adjust top position as needed */
+            left: 20px; /* Adjust left position as needed */
+        }
+        .score-checker {
+            display: flex;
+            justify-content: flex-start;
+            margin-bottom: 20px; /* Space below the score checker */
+        }
+
+        .score-checker span {
+            color: #007bff; /* Blue color for score text */
+            margin-right: 10px; /* Spacing between score text and value */
+        }
+
+        #correct-score {
+            color: #5cb85c; /* Subdued green for correct score */
+        }
+
+        #wrong-score {
+            color: #d9534f; /* Subdued red for wrong score */
+        }
+
+        .dropdown-container {
+            position: absolute;
+            top: 20px; /* Adjust top position as needed */
+            right: 20px; /* Adjust right position as needed */
         }
     </style>
 </head>
@@ -39,13 +74,18 @@
         <div class="content">
             <h1>Finite State Machine Designer</h1> 
 
+            <!-- Score Checker -->
+            <div class="score-checker">
+                <span id="correct-score">Correct: </span><span id="wrong-score">Wrong: </span>
+            </div>
+
             <div class="btn-group">
                 <button onclick="gen()" id="regex-generator" class="btn btn-primary" type="button">Generate New Regex</button>
             </div>
 
             <p id="regex"></p>
 
-            <canvas id="flat-canvas"  width="800" height="400" style="border:1px solid #000000;"></canvas>
+            <canvas id="flat-canvas"  width="1250" height="625" style="border:1px solid #000000;"></canvas>
 
             <p id="result"></p>
             <div class="btn-group">
@@ -56,8 +96,17 @@
                 <input type="checkbox" id="dfa-toggle" name="dfa" class="form-check-input">
                 <label for="dfa-toggle" class="form-check-label"> Force DFA Constraint</label>
             </div>
+
+            <!-- Dropdown Box Placeholder -->
+            <div class="dropdown-container">
+                <select class="dropdown-placeholder btn btn-secondary" id="regex-dropdown" onchange="getAllRegex()">
+                    <option selected disabled>Choose a Regex</option>
+                    <!-- TODO: Add options dynamically using JavaScript -->
+                </select>
+            </div>
+
             <!-- Styled redirects -->
-            <div class="container text-center mt-5">
+            <div class="styled-redirects">
                 <div class="btn-group">
                     <a href="./index.html" class="btn btn-primary btn-lg" style="background-color: #ffd700; color: black;">Go to Home</a>
                     <a href="./about.html" class="btn btn-secondary btn-lg" style="background-color: #ffd700; color: black;">Learn About Us</a>
