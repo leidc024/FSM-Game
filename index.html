@@ -22,6 +22,11 @@
             z-index: 9999;
         }
 
+        ul.myUl{
+            display: inline-block;
+            text-align: left;
+        }
+
 
         #flat-canvas {
             display: none;
@@ -177,7 +182,7 @@
                 <!-- Instruction menu content goes here -->
                 <div>
 
-                    <ul>
+                    <ul class="myUl">
                         <li><b>Create State:</b> Double-click empty space</li>
 
                         <li><b>Create Transition From Highlighted State:</b> Shift-click state to point at</li>
@@ -215,16 +220,8 @@
         <div class="b-example-divider"></div>
     </div>
 
-
-
-
-
-
-
-
     
      <script>
-         
             function toggleInstructions() {
             // Get the instruction menu element
             var instructionMenu = document.getElementById("instructionMenu");
