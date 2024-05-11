@@ -54,17 +54,73 @@
         }
 
         #correct-score {
-            color: #5cb85c; /* Subdued green for correct score */
+            color: #0056b3; /* Subdued green for correct score */
         }
 
         #wrong-score {
-            color: #d9534f; /* Subdued red for wrong score */
+            color: #d3615d; /* Subdued red for wrong score */
         }
 
         .dropdown {
             position: absolute;
             top: 10px; /* Adjust top position as needed */
             right: 10px; /* Adjust right position as needed */
+        }
+
+        /* Additional styles for the instruction menu */
+        #instructionMenu {
+            display: none;
+            position: absolute;
+            text-align: center;
+            background-color: #fff; /* Change this to the desired background color */
+            color: #002147; /* Change this to the desired text color */
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            z-index: 1000;
+            font-family: 'Arial', sans-serif;
+            font-size: 16px;
+        }
+
+        .instructions-button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin-right: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .instructions-button:hover {
+            background-color: #0056b3;
+        }
+
+        .check-equivalence-button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .check-equivalence-button:hover {
+            background-color: #0056b3;
+        }
+
+        .score-box {
+            background-color: #f8f9fa;
+            color: #343a40;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 20px;
+            font-family: 'Arial', sans-serif;
+            font-size: 16px;
+            font-weight: bold;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
     </style>
 </head>
@@ -76,7 +132,9 @@
 
             <!-- Score Checker -->
             <div class="score-checker">
-                <span id="correct-score">Correct: </span><span id="wrong-score">Wrong: </span>
+                <div class="score-box">
+                    <span id="correct-score">Correct: </span><span id="wrong-score">Wrong: </span>
+                </div>
             </div>
 
             <div class="btn-group">
@@ -89,7 +147,8 @@
 
             <p id="result"></p>
             <div class="btn-group">
-                <button onclick="comp()" id="fsm-check" class="btn btn-primary" type="button">Check For Equivalence With Regex</button>
+                <button class="instructions-button" onclick="toggleInstructions()">Instructions</button>
+                <button onclick="comp()" id="fsm-check" class="check-equivalence-button" type="button">Check For Equivalence With Regex</button>
             </div>
 
             <div class="btn-group-checkbox">
@@ -109,45 +168,51 @@
                     <li><a class="dropdown-item" href="#">Something else here</a></li>
                 </ul>
             </div>
+        </div>
 
-            <!-- Styled redirects -->
-            <div class="styled-redirects">
-                <div class="btn-group">
-                    <button class="btn btn-btn-m" type="button" style="background-color: #ffd700; color: black;" onclick="toggleInstructions()">Instructions</button>
-                    <a href="./index.html" class="btn btn-btn-m" style="background-color: #ffd700; color: black;">Go to Home</a>
-                    <a href="./about.html" class="btn btn-btn-m" style="background-color: #ffd700; color: black;">Learn About Us</a>
-                </div>
-            </div>            
+        <!-- Styled redirects -->
+        <div class="styled-redirects">
+            <div class="btn-group">
+                <a href="./index.html" class="btn btn-btn-m" style="background-color: #ffd700; color: black;">Go to Home</a>
+                <a href="./about.html" class="btn btn-btn-m" style="background-color: #ffd700; color: black;">Learn About Us</a>
+            </div>
+        </div>
+
+        <!-- Instruction Menu -->
+        <div id="instructionMenu">
+            <!-- Instruction menu content goes here -->
+            <div>
+                <ul>
+                    <li><b>Create State:</b> Double-click empty space</li>
+                    <li><b>Create Transition From Highlighted State:</b> Shift-click state to point at</li>
+                    <li><b>Highlight State/Transition:</b> Single-click state/transition</li>
+                    <li><b>Delete State/Transition:</b> Delete key</li>
+                    <li><b>Toggle Start State:</b> Ctrl-click state</li>
+                    <li><b>Toggle Accept State:</b> Double-click state</li>
+                    <li><b>Label Highlighted State/Transition:</b> Type (use '\e' for ε)</li>
+                </ul>
+            </div>
+            <button class="btn btn-danger" onclick="closeInstructions()">Exit</button>
         </div>
     </div>
-      
-    <div id="instructionMenu">
-        Instruction menu content goes here
-        <div>
-
-            <ul class="myUl">
-                <li><b>Create State:</b> Double-click empty space</li>
-
-                <li><b>Create Transition From Highlighted State:</b> Shift-click state to point at</li>
-
-                <li><b>Highlight State/Transition:</b> Single-click state/transition</li>
-
-                <li><b>Delete State/Transition:</b> Delete key</li>
-
-                <li><b>Toggle Start State:</b> Ctrl-click state</li>
-
-                <li><b>Toggle Accept State:</b> Double-click state</li>
-
-                <li><b>Label Highlighted State/Transition:</b> Type (use '\e' for ε)</li>
-            </ul>
-        </div>
-        <button class="btn btn-danger" onclick="closeInstructions()">Exit</button>
-    </div> 
-
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" 
             integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-       <script  src="script.js" ></script>
+    <script src="script.js"></script>
+    <script>
+        function toggleInstructions() {
+            var instructionMenu = document.getElementById("instructionMenu");
+            if (instructionMenu.style.display === "none") {
+                instructionMenu.style.display = "block";
+            } else {
+                instructionMenu.style.display = "none";
+            }
+        }
+
+        function closeInstructions() {
+            var instructionMenu = document.getElementById("instructionMenu");
+            instructionMenu.style.display = "none";
+        }
+    </script>
 </body>
 </html>
-
