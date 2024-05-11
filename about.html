@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -25,6 +25,34 @@
             width: 100%;
             position: fixed; /* Fixed position to stick to the bottom */
             bottom: 0; /* Stick to the bottom */
+        }
+
+        /* Applied background image to the body */
+        body {
+            /* Set the background image */
+            background-image: url('UP.jpeg');
+            /* Set background size to cover the entire element */
+            background-size: cover;
+            /* Center the background image vertically and horizontally */
+            background-position: center;
+            /* Ensure the background image covers the entire viewport */
+            background-attachment: fixed;
+            /* Add a background color as a fallback */
+            background-color: rgba(29, 42, 53, 1); /* Your desired background color */
+        }
+        
+        body::before {
+            content: "";
+            /* Position the overlay */
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            /* Set the color and opacity of the overlay */
+            background-color: rgba(0, 0, 0, 0.5); /* Adjust opacity here (0.5 for 50% opacity) */
+            /* Ensure the overlay covers the entire body */
+            z-index: -1; /* Place the overlay behind other content */
         }
     </style>
 </head>
@@ -54,13 +82,16 @@
         </div>
     </nav>
 
+    
     <div class="container content">
         <div class="row">
             <div class="col-md-6">
+                
                 <div class="person-box">
                     <h2>Leian Carl Dela Cruz</h2>
                     <p>Project Lead</p>
                 </div>
+
                 <div class="person-box">
                     <h2>Adrian Vaflor</h2>
                     <p>Backend Developer</p>
@@ -68,7 +99,7 @@
             </div>
             <div class="col-md-6">
                 <div class="person-box">
-                    <h2>Bazer Nunez</h2>
+                    <h2>Bazer Timothy Nuñez</h2>
                     <p>Frontend Developer</p>
                 </div>
                 <div class="person-box">
