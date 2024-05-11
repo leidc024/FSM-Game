@@ -111,16 +111,42 @@
         }
 
         .score-box {
-            background-color: #f8f9fa;
-            color: #343a40;
-            border: 1px solid #dee2e6;
+            background-color: #343a40;
+            color: white;
             border-radius: 5px;
-            padding: 10px;
+            padding: 20px;
             margin-bottom: 20px;
             font-family: 'Arial', sans-serif;
             font-size: 16px;
+            text-align: center;
+            width: 200px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .score-item {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+        }
+
+        .score-value {
+            font-size: 20px;
             font-weight: bold;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-top: 10px;
+        }
+        .score-label {
+            font-size: 20px;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        .correct {
+            color: #5cb85c; /* Green color for correct score */
+        }
+
+        .wrong {
+            color: #d9534f; /* Red color for wrong score */
         }
     </style>
 </head>
@@ -130,12 +156,21 @@
         <div class="content">
             <h1>Finite State Machine Designer</h1>
 
-            <!-- Score Checker -->
-            <div class="score-checker">
-                <div class="score-box">
-                    <span id="correct-score">Correct: </span><span id="wrong-score">Wrong: </span>
+            <!-- Score box here -->
+            <div class="score-box">
+                <div class="score-label">Score Board</div>
+                <div class="score-item">
+                    <div class="score-label correct">Correct:</div>
+                    <!-- TODO: LINK TO THE SCORE VALUES HERE -->
+                    <div class="score-value correct">3</div>
+                </div>
+                <div class="score-item">
+                    <div class="score-label wrong">Wrong:</div>
+                    <!-- TODO: LINK TO THE SCORE VALUES HERE -->
+                    <div class="score-value wrong">2</div>
                 </div>
             </div>
+            <div style="margin-top: 20px;"></div>                            
 
             <div class="btn-group">
                 <button onclick="gen()" id="regex-generator" class="btn btn-primary" type="button">Generate New Regex</button>
