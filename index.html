@@ -22,27 +22,10 @@
             z-index: 9999;
         }
 
-        ul.myUl{
-            display: inline-block;
-            text-align: left;
-        }
 
 
         #flat-canvas {
             display: none;
-        }
-
-        .img-container {
-            max-height: 100%;
-            width: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .img-container img {
-            max-width: 100%;
-            height: auto;
         }
     </style>
 </head>
@@ -58,12 +41,11 @@
                         <a class="nav-link active" aria-current="page" href="#">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="./about.html
-                            ">About</a>
+                        <a class="nav-link" href="#">About</a>
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Services
+                            Questions
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end">
 
@@ -182,7 +164,7 @@
                 <!-- Instruction menu content goes here -->
                 <div>
 
-                    <ul class="myUl">
+                    <ul>
                         <li><b>Create State:</b> Double-click empty space</li>
 
                         <li><b>Create Transition From Highlighted State:</b> Shift-click state to point at</li>
@@ -201,9 +183,10 @@
                 <button class="btn btn-danger" onclick="closeInstructions()">Exit</button>
             </div>
         </div>
-        <div class="img-container">
+        <div class="overflow-hidden" style="max-height: 30vh;">
             <div class="container px-5">
-                <img src="./fsm.png" class="img-fluid border rounded-3 shadow-lg mb-4" alt="Example image" loading="lazy">
+                <img src="./fsm.png" class="img-fluid border rounded-3 shadow-lg mb-4" alt="Example image" width="700"
+                     height="500" loading="lazy">
             </div>
         </div>
     </div>
@@ -220,8 +203,16 @@
         <div class="b-example-divider"></div>
     </div>
 
+
+
+
+
+
+
+
     
      <script>
+         
             function toggleInstructions() {
             // Get the instruction menu element
             var instructionMenu = document.getElementById("instructionMenu");
