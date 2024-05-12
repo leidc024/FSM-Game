@@ -1365,17 +1365,24 @@ function dfaTest(table) {
 
 
 function isEdgeInRegexAlphabet(){
+  let scannedAlphabet = [];
+  for(let i = 0; i<regularExpression.alphabetInRegex.length; i++)
+    scannedAlphabet.push(0);
   for (var e of edges) {
     console.log("symbols: " + e.label);
-    if(e.label === EPSILON || regularExpression.alphabetInRegex.includes(e.label) || e.label === ""){
+    if(e.label === EPSILON || e.label === ""){
       console.log("accepted");
+    }
+    else if(regularExpression.alphabetInRegex.includes(e.label)){
+      scannedAlphabet[regularExpression.alphabetInRegex.indexOf(e.label)] = 1;
     }
     else{
       console.log("not accepted");
       return false;
     }
   }
-  return true;
+  if(scannedAlphabet.includes(0)) return false;
+  else return true;
 }
 
 
@@ -1432,7 +1439,7 @@ function addNewRegex(userExpr) {
   regularExpression.generate2(userExpr);
   regex.innerHTML = regularExpression.regex;
   answer.innerHTML = "Draw A Machine";
-  answer.style.color = "black";
+  answer.style.color = "FEF2B";
 }
 
 
