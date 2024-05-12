@@ -1414,6 +1414,7 @@ var fromY = 0;
 const regularExpression = new Regex();
 regex.innerHTML = regularExpression.regex || "";
 answer.innerHTML = "Draw A Machine";
+answer.style.color = "FEF2B";
 
 var state = null;
 
