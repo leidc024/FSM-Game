@@ -6,8 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="student.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
-
-    <title>Automata App</title>
+    <link rel="icon" type="image/x-icon" href="agile.png">
+    <title>FSM Game</title>
     <style>
         body {
             background-color: #011F3F; /* Dark blue background color */
@@ -29,14 +29,17 @@
         <div class="content">
             <h1>Finite State Machine Designer</h1>
 
+            <!-- Score Checker -->
             <div class="score-checker">
                 <h2>Scoreboard</h2>
                 <span id="correct-score">Correct: </span><span id="wrong-score">Wrong: </span>
             </div>
 
-
             <div class="btn-group">
-                <button onclick="gen()" id="regex-generator" class="btn btn-primary" type="button">Generate New Regex</button>
+                <button onclick="
+                    if(c===regexArr.length) return false;
+                    addNewRegex(regexArr[++c]);
+                    " id="regex-generator" class="btn btn-primary" type="button">Generate New Regex</button>
             </div>
 
             <p id="regex"></p>
@@ -46,7 +49,10 @@
             <p id="result"></p>
             <div class="btn-group">
                 <button class="btn btn-primary" onclick="toggleInstructions()">Instructions</button>
-                <button onclick="comp()" id="fsm-check" class="btn btn-success" type="button">Evaluate</button>
+                <button onclick="
+                comp();
+                displayScore();
+                " id="fsm-check" class="btn btn-success" type="button">Evaluate</button>
             </div>
 
             <div class="btn-group-checkbox">
@@ -55,62 +61,53 @@
             </div>
 
             <!-- drop down -->
+
             <div class="dropdown">
-                <a class="btn btn-primary dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <button class="btn btn-primary dropdown-toggle" aria-expanded="false" onclick="
+                    toggleDropdown();
+                    addDropDownContents();
+                    " >
                     Questions
-                </a>
-
-                <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="#">Action</a></li>
-                    <li><a class="dropdown-item" href="#">Another action</a></li>
-                    <li><a class="dropdown-item" href="#">Something else here</a></li>
-                </ul>
+                </button>
+                <ul class="dropdown-menu" id="dropdown-menu"></ul>
             </div>
-        </div>
+            
 
-        <!-- Styled redirects -->
-        <div class="styled-redirects">
-            <div class="btn-group">
-                <a href="./index.html" class="btn btn-btn-m" style="background-color: #ffd700; color: black;">Go to Home</a>
-                <a href="./about.html" class="btn btn-btn-m" style="background-color: #ffd700; color: black;">Learn About Us</a>
-            </div>
-        </div>
 
-        <!-- Instruction Menu -->
-        <div id="instructionMenu">
-            <!-- Instruction menu content goes here -->
-            <div>
-                <ul>
-                    <li><b>Create State:</b> Double-click empty space</li>
-                    <li><b>Create Transition From Highlighted State:</b> Shift-click state to point at</li>
-                    <li><b>Highlight State/Transition:</b> Single-click state/transition</li>
-                    <li><b>Delete State/Transition:</b> Delete key</li>
-                    <li><b>Toggle Start State:</b> Ctrl-click state</li>
-                    <li><b>Toggle Accept State:</b> Double-click state</li>
-                    <li><b>Label Highlighted State/Transition:</b> Type (use '\e' for ε)</li>
-                </ul>
+            <!-- Styled redirects -->
+            <div class="styled-redirects">
+                <div class="btn-group">
+                    <a href="./index.html" class="btn btn-btn-m" style="background-color: #ffd700; color: black;">Go to Home</a>
+                    <a href="./about.html" class="btn btn-btn-m" style="background-color: #ffd700; color: black;">Learn About Us</a>
+                </div>
             </div>
-            <button class="btn btn-danger" onclick="closeInstructions()">Exit</button>
+
+            <!-- Instruction Menu -->
+            <div id="instructionMenu">
+                <!-- Instruction menu content goes here -->
+                <div>
+                    <ul>
+                        <li><b>Create State:</b> Double-click empty space</li>
+                        <li><b>Create Transition From Highlighted State:</b> Shift-click state to point at</li>
+                        <li><b>Highlight State/Transition:</b> Single-click state/transition</li>
+                        <li><b>Delete State/Transition:</b> Delete key</li>
+                        <li><b>Toggle Start State:</b> Ctrl-click state</li>
+                        <li><b>Toggle Accept State:</b> Double-click state</li>
+                        <li><b>Label Highlighted State/Transition:</b> Type (use '\e' for ε)</li>
+                    </ul>
+                </div>
+                <button class="btn btn-danger" onclick="closeInstructions()">Exit</button>
+            </div>
         </div>
     </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" 
             integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-    <script src="script.js"></script>
+    <script  src="script2.js" ></script>
     <script>
-        function toggleInstructions() {
-            var instructionMenu = document.getElementById("instructionMenu");
-            if (instructionMenu.style.display === "none") {
-                instructionMenu.style.display = "block";
-            } else {
-                instructionMenu.style.display = "none";
-            }
-        }
-
-        function closeInstructions() {
-            var instructionMenu = document.getElementById("instructionMenu");
-            instructionMenu.style.display = "none";
-        }
+        displayScore();
+        addNewRegex(regexArr[c]);
     </script>
+     
 </body>
 </html>
