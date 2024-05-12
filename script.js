@@ -54,6 +54,7 @@ function removeRegex(regex){
         regexArr.splice(index, 1);
     }
     addDropDownContents();
+    localStorage.setItem('regexArr', JSON.stringify(regexArr));
 }
 
 
@@ -81,15 +82,6 @@ function addDropDownContents(){
     }   
 }
 
-function updateScore(update){
-    if(!update){
-        score.Correct = score.Wrong = 0;
-    }
-    else if(update === -1) score.Wrong++;
-    else if(update === 1) score.Correct++;
-    displayScore();
-    localStorage.setItem('score', JSON.stringify(score));
-}
 
 class Regex {
 
@@ -349,3 +341,5 @@ function closeInstructions() {
     // Hide the instruction menu by setting its display style to "none"
     instructionMenu.style.display = "none";
 }
+
+
