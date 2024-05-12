@@ -204,6 +204,9 @@ class Regex {
           postfix+=stack.pop();
         }
         stack.pop();
+        if(SIGMA.includes(regex[i+1])){
+          stack.push(".");
+        }
       }
       else if(regex[i] === "+"){
         while(stack.peek() === "."){
