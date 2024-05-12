@@ -1187,7 +1187,7 @@ function gen() {
     regularExpression.generate();
     regex.innerHTML = regularExpression.regex;
     answer.innerHTML = "Draw A Machine";
-    answer.style.color = "black";
+    answer.style.color = "#FEF2B";
 }
 
 const canvas = document.getElementById('flat-canvas');
