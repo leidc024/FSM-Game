@@ -146,34 +146,13 @@ class Regex {
       //this.generate();
   }
 
-  /**
-   * Generate new regular expression and corresponding NFA
-   */
-  generate(userExpr = "") {
-    this.postfix = "";
-    this.regex =  this.#kleene(7, 0.5, 0.2, 0.1);
-    console.log("postfix: " + this.postfix);
-    this.nfa = this.#regexToNfa(this.postfix);
-  }
-
   generate2(userExpr){
     //Teacher should represent epsilon as e but it will be converted to actual epsilon symbol here
     userExpr = this.eToEpsilon(userExpr);
     this.postfix = this.regexToPostfix(userExpr);
-    this.alphabetInRegex = this.getRegexAlphabet();
     this.regex =  userExpr;
     console.log("postfix: " + this.postfix);
     this.nfa = this.#regexToNfa(this.postfix);
-  }
-
-  getRegexAlphabet(){
-    let usedAlphabet = [];
-    for(let i = 0; i< this.postfix.length; i++){
-        if(SIGMA.includes(this.postfix[i]) && !usedAlphabet.includes(this.postfix[i])){
-            usedAlphabet.push(this.postfix[i]);
-        }
-    }
-    return usedAlphabet;
   }
 
   eToEpsilon(str){
@@ -1364,27 +1343,6 @@ function dfaTest(table) {
  */
 
 
-function isEdgeInRegexAlphabet(){
-  let scannedAlphabet = [];
-  for(let i = 0; i<regularExpression.alphabetInRegex.length; i++)
-    scannedAlphabet.push(0);
-  for (var e of edges) {
-    console.log("symbols: " + e.label);
-    if(e.label === EPSILON || e.label === ""){
-      console.log("accepted");
-    }
-    else if(regularExpression.alphabetInRegex.includes(e.label)){
-      scannedAlphabet[regularExpression.alphabetInRegex.indexOf(e.label)] = 1;
-    }
-    else{
-      console.log("not accepted");
-      return false;
-    }
-  }
-  if(scannedAlphabet.includes(0)) return false;
-  else return true;
-}
-
 
 /**
  * Outputs correct if regex and user's machine accept the same language
@@ -1407,7 +1365,7 @@ function comp() {
       var user = subsetConstruct(userNFA.table, startSid, userNFA.accept, 0);
       var reg = subsetConstruct(regNFA.table, regNFA.start, [regNFA.end], Object.keys(user.dfa).length)
       var equal = isomorphic(user, reg);
-      if (equal && isEdgeInRegexAlphabet()) {
+      if (equal) {
         update = 1;
         answer.innerHTML = "Correct";
         answer.style.color = "green";
