@@ -708,6 +708,7 @@ class Node {
 function isomorphic(user, regex) {
   // Array of all accept states (state IDs are unique across both DFAs)
   const accept = user.accept.concat(regex.accept);
+  console.log("Isomorphic accept states: ", accept);
   // Each state has a set represented by a tree: 'parent' represents the root
   //  of the tree for a given state
   const parent = {};
@@ -734,6 +735,7 @@ function isomorphic(user, regex) {
 
   // Calculate union of start states
   equal = unionCheck(user.start, regex.start, parent, rank, accept);
+  console.log("Isomorphic equal1: ", equal);
 
   // Push start states of both DFAs to stack
   pairStack.push([user.start, regex.start]);
@@ -746,6 +748,9 @@ function isomorphic(user, regex) {
     for (var c of SIGMA) {
       // Take transition via 'c' for each state and determine which set they belong to
       //  (i.e., the root of the tree they're in)
+      console.log("var c Isomorphic: ", c);
+      console.log("pairStack: ", pair);
+      console.log("UserStates: ", userStates);
       var r1 = 0;
       var r2 = 0;
       if (userStates.includes(pair[0])) {
@@ -762,12 +767,14 @@ function isomorphic(user, regex) {
       if (r1 != r2) {
         // Take the union of the sets
         equal = unionCheck(r1, r2, parent, rank, accept);
+        console.log("Isomorphic equal2: ", equal);
         // Push the traversed to-states onto the stack
         pairStack.push([r1, r2]);
       }
     }
   }
 
+  console.log("Isomorphic FINAL EQUAL: ", equal);
   return equal;
 }
 
@@ -797,10 +804,12 @@ function unionCheck(x, y, parent, rank, accept) {
   // Get root nodes for each state
   var a = findSet(x, parent);
   var b = findSet(y, parent);
+  console.log("findSet A: ", a);
+  console.log("findSet B: ", b);
   // Return false if the union of sets contains both a non-accepting
   //  and accepting state
   if (accept.includes(a)) {
-    if (!accept.includes(b)) {
+    if (!(accept.includes(b))) {
       return false;
     }
   } else {
@@ -936,6 +945,10 @@ function subsetConstruct(nfa, start, final, dfaId) {
     }
   }
 
+  console.log("DFA CONVERTED: ", dfa)
+  console.log("START: ", begin)
+  console.log("ACCEPT: ", accept)
+
   return {
     dfa : dfa,
     start : begin,
@@ -1016,6 +1029,7 @@ function eClose(states, nodeClosure, nfa) {
   for (var v of closed.values()) {
     values.push(v);
   }
+  console.log("Values: ", values);
   return values;
 }
 
@@ -1056,6 +1070,7 @@ function close(k, nodeClosure, nClosed, nfa) {
       nClosed.add(q);
     }
   }
+  console.log("nClosed: ", nClosed);
   return nClosed.values();
 }
 
@@ -1078,6 +1093,7 @@ function getSymbols(label) {
       s.add(char);
     }
   }
+  console.log("s value:", s);
   return s.values();
 }
 
@@ -1157,6 +1173,8 @@ function transTable() {
       nfa[e.fromNode.id][s].push(e.toNode.id);
     }
   }
+  console.log("NFA: ", nfa);
+  console.log("Final: ", final);
 
   return {
     table : nfa,
@@ -1381,8 +1399,11 @@ function comp() {
       if (proceed) {
         var regNFA = regularExpression.nfa;
         var user = subsetConstruct(userNFA.table, startSid, userNFA.accept, 0);
+        console.log("USER: ", user);
         var reg = subsetConstruct(regNFA.table, regNFA.start, [regNFA.end], Object.keys(user.dfa).length)
+        console.log("REG: ", user);
         var equal = isomorphic(user, reg);
+        console.log("EQUAL!!!: ", equal);
         if (equal) {
           update = 1;
           answer.innerHTML = "Correct";
