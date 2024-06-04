@@ -142,6 +142,9 @@ function updateScore(update){
 
 class Regex {
   constructor() {
+
+    // Simply initialize regex (this) instance with an empty string.
+
       this.regex = "";
       //this.generate();
   }
@@ -164,51 +167,53 @@ class Regex {
     return newStr;
   }
 
+  // Convert given regex string to postfix expression for parsing later.
   regexToPostfix(regex){
-    regex = this.removeSpace(regex);
-    let stack = new Stack();
-    let postfix = "";
-    let prev = "";
-    for(let i = 0; i<regex.length; i++){
-      if(SIGMA.includes(regex[i]) || regex[i] === EPSILON){
-        if(SIGMA.includes(prev) || prev === EPSILON || prev === "*"){
+    regex = this.removeSpace(regex);  // Clean up whitespaces
+    let stack = new Stack();          // Initialize stack for string parsing
+    let postfix = "";                 // Initialize postfix results
+    let prev = "";                    // Initialize prev container for processed characters
+    // Conduct string processing
+    for(let i = 0; i < regex.length; i++){
+      if(SIGMA.includes(regex[i]) || regex[i] === EPSILON){             // Check if character is in alphabet or if it is the empty string
+        if(SIGMA.includes(prev) || prev === EPSILON || prev === "*"){   // If previous character is in alphabet, epsilon, or a kleene star, push concatenation operator
           stack.push(".")
         }
-        postfix+=regex[i];
+        postfix += regex[i];                                             // Append current character to postfix expression
       }
-      else if (regex[i] === "*"){
-        postfix+="*"
+      else if (regex[i] === "*"){                                        // Check if current character is a kleene star
+        postfix += "*"                                                   // Append kleene star to postfix
       }
-      else if (regex[i] === "("){
-        if(prev !=="" && prev !== "+" && prev != "("){
+      else if (regex[i] === "("){                                        // If current character is an opening parenthesis
+        if(prev !== "" && prev !== "+" && prev != "("){                  // If previous character is not empty, a union operator, or an opening parenthesis, push concatenation operator
           stack.push(".")
         }
-        stack.push("(");
+        stack.push("(");                                                 // Else push opening parenthesis to stack
       }
-      else if (regex[i] === ")"){
-        while(stack.peek() !== '('){
-          postfix+=stack.pop();
+      else if (regex[i] === ")"){                                        // If current character is a closing parenthesis
+        while(stack.peek() !== '('){                                     // Pop from stack to postfix until an opening parenthesis is encountered
+          postfix += stack.pop();
         }
-        stack.pop();
-        if(SIGMA.includes(regex[i+1])){
+        stack.pop();                                                     // Pop the opening parenthesis from the stack
+        if(SIGMA.includes(regex[i+1])){                                  // If the next character is in alphabet, push concatenation operator
           stack.push(".");
         }
       }
-      else if(regex[i] === "+"){
-        while(stack.peek() === "."){
-          postfix+=stack.pop();
+      else if(regex[i] === "+"){                                         // If current character is a union operator
+        while(stack.peek() === "."){                                     // Pop concatenation operators from stack to postfix
+          postfix += stack.pop();
         }
-        stack.push("+");
+        stack.push("+");                                                 // Push union operator to stack
       }
-      else{
-        stack.push(regex[i]);
+      else{                                                              // For any other characters (if any)
+        stack.push(regex[i]);                                            // Push the character to stack
       }
-      prev = regex[i];
+      prev = regex[i];                                                   // Update previous character to current character
     }
-    while(!stack.isEmpty()){
-      postfix+=stack.pop();
+    while(!stack.isEmpty()){                                             // Pop all remaining operators from stack to postfix
+      postfix += stack.pop();
     }
-    return postfix;
+    return postfix;                                                      // Return the resulting postfix expression
   }
 
   /**
@@ -413,22 +418,23 @@ class Regex {
 }
 
 class Edge {
+  // Construct edge instance for state diagrams
   constructor(id, fromNode, toNode) {
-    this.id = id;
-    this.fromNode = fromNode;
-    this.toNode = toNode;
-    this.label = "";
+    this.id = id;                   // Initialize edge ID
+    this.fromNode = fromNode;       // Initialize fromNode
+    this.toNode = toNode;           // Initialize toNode
+    this.label = "";                // Initialize label
 
     // Set if self loop
-    this.x = null;
-    this.y = null;
-    this.radius = null;
+    this.x = null;                  // Initialize x coordinate for self loop
+    this.y = null;                  // Initialize y coordinate for self loop
+    this.radius = null;             // Initialize radius for self loop
 
     // Set if non self loop
-    this.angle = null;
+    this.angle = null;              // Initialize angle for non self loop
 
     // Set if curved
-    this.curved = false;
+    this.curved = false;            // Initialize curved flag
   }
 
   /**
@@ -436,194 +442,194 @@ class Edge {
    * @param {CanvasRenderingContext2D} ctx 2D rendering context for drawing surface of FSM canvas
    */
   draw(ctx) {
-    ctx.strokeStyle = BLACK;
-    ctx.fillStyle = BLACK;
+    ctx.strokeStyle = BLACK;        // Set stroke style to black
+    ctx.fillStyle = BLACK;          // Set fill style to black
 
     // Colour edge red if highlighted
     if (this.id == highTid) {
-        ctx.strokeStyle = RED;
-        ctx.fillStyle = RED;
+        ctx.strokeStyle = RED;      // Set stroke style to red
+        ctx.fillStyle = RED;        // Set fill style to red
     }
 
-    ctx.beginPath();
+    ctx.beginPath();                // Begin new path
 
     if (this.fromNode == this.toNode) { // self loop
-        this.angle = 5*Math.PI/16;
-        var dx = Math.cos(this.angle)*RADIUS;
-        var dy = Math.sin(this.angle)*RADIUS;
-        var xn = this.fromNode.x;
-        var yn = this.fromNode.y;
+        this.angle = 5*Math.PI/16;  // Calculate angle for self loop
+        var dx = Math.cos(this.angle)*RADIUS;  // Calculate dx
+        var dy = Math.sin(this.angle)*RADIUS;  // Calculate dy
+        var xn = this.fromNode.x;   // Get x coordinate of fromNode
+        var yn = this.fromNode.y;   // Get y coordinate of fromNode
 
         // Start of arc
-        var x1 = xn-dx;
-        var y1 = yn-dy;
+        var x1 = xn-dx;             // Calculate x1 for arc start
+        var y1 = yn-dy;             // Calculate y1 for arc start
         // End of arc
-        var x2 = xn+dx;
-        var y2 = yn-dy;
+        var x2 = xn+dx;             // Calculate x2 for arc end
+        var y2 = yn-dy;             // Calculate y2 for arc end
         // Arc turning point
-        var x3 = xn;
-        var y3 = yn-1.7*RADIUS;
+        var x3 = xn;                // Calculate x3 for arc turning point
+        var y3 = yn-1.7*RADIUS;     // Calculate y3 for arc turning point
 
         // Find circle equation from three points (above)
-        var circle = circleFromPoints(x1, y1, x2, y2, x3, y3);
+        var circle = circleFromPoints(x1, y1, x2, y2, x3, y3);  // Calculate circle
 
-        this.x = circle.x; // x centre
-        this.y = circle.y // y centre
-        this.radius = circle.radius;
+        this.x = circle.x;          // Set x centre of circle
+        this.y = circle.y;          // Set y centre of circle
+        this.radius = circle.radius;// Set radius of circle
 
         // Angle between arc centre and end of arc
-        var alpha = Math.atan2(y2-this.y, x2-this.x); 
+        var alpha = Math.atan2(y2-this.y, x2-this.x); // Calculate alpha
 
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.radius, Math.PI-alpha, alpha); // arc is drawn outside of node area
-        ctx.stroke();
+        ctx.beginPath();            // Begin new path
+        ctx.arc(this.x, this.y, this.radius, Math.PI-alpha, alpha); // Draw arc
+        ctx.stroke();               // Stroke arc
 
         // Draw chevron at end of arc
-        ctx.beginPath();
-        ctx.moveTo(x2, y2);
-        ctx.lineTo(x2+CHEVRON*Math.cos(this.angle-Math.PI/10), y2-CHEVRON*Math.sin(this.angle-Math.PI/10));
-        ctx.lineTo(x2-CHEVRON*Math.cos(this.angle+Math.PI/10), y2-CHEVRON*Math.sin(this.angle+Math.PI/10));
-        ctx.closePath();
-        ctx.stroke();
-        ctx.fill();
+        ctx.beginPath();            // Begin new path
+        ctx.moveTo(x2, y2);         // Move to end of arc
+        ctx.lineTo(x2+CHEVRON*Math.cos(this.angle-Math.PI/10), y2-CHEVRON*Math.sin(this.angle-Math.PI/10)); // Draw first line of chevron
+        ctx.lineTo(x2-CHEVRON*Math.cos(this.angle+Math.PI/10), y2-CHEVRON*Math.sin(this.angle+Math.PI/10)); // Draw second line of chevron
+        ctx.closePath();            // Close path
+        ctx.stroke();               // Stroke chevron
+        ctx.fill();                 // Fill chevron
 
-        ctx.strokeStyle = BLACK; // revert colour to black
+        ctx.strokeStyle = BLACK;    // Revert colour to black
 
-        ctx.fillStyle = STATEFILL;
-            
-        var width = ctx.measureText(this.label).width;
+        ctx.fillStyle = STATEFILL;  // Set fill style to state fill colour
 
-        ctx.fillRect(x3-width/2, y3-4-FONTSIZE+2, width, FONTSIZE+2);
+        var width = ctx.measureText(this.label).width; // Measure label width
 
-        ctx.fillStyle = BLACK;
+        ctx.fillRect(x3-width/2, y3-4-FONTSIZE+2, width, FONTSIZE+2); // Draw label background
 
-        ctx.beginPath();
-        ctx.fillText(this.label, x3, y3-4);
-        ctx.stroke();
+        ctx.fillStyle = BLACK;      // Set fill style to black
+
+        ctx.beginPath();            // Begin new path
+        ctx.fillText(this.label, x3, y3-4); // Draw label text
+        ctx.stroke();               // Stroke text
         
-        ctx.fillStyle = STATEFILL
-      } else if (this.curved) { // curved edge between nodes
-        var x1 = this.fromNode.x;
-        var y1 = this.fromNode.y;
+        ctx.fillStyle = STATEFILL;  // Set fill style to state fill colour
+      } else if (this.curved) {     // curved edge between nodes
+        var x1 = this.fromNode.x;   // Get x coordinate of fromNode
+        var y1 = this.fromNode.y;   // Get y coordinate of fromNode
 
-        var x2 = this.toNode.x;
-        var y2 = this.toNode.y;
+        var x2 = this.toNode.x;     // Get x coordinate of toNode
+        var y2 = this.toNode.y;     // Get y coordinate of toNode
 
-        var dx = x1-x2;
-        var dy = y1-y2;
+        var dx = x1-x2;             // Calculate dx
+        var dy = y1-y2;             // Calculate dy
         
-        this.angle = Math.atan2(dy, dx);
+        this.angle = Math.atan2(dy, dx); // Calculate angle
 
-        var x3 = 0.5*(x1+x2) + 2*SELECTAREA*Math.cos(this.angle - Math.PI/2);
-        var y3 = 0.5*(y1+y2) + 2*SELECTAREA*Math.sin(this.angle - Math.PI/2);
+        var x3 = 0.5*(x1+x2) + 2*SELECTAREA*Math.cos(this.angle - Math.PI/2); // Calculate x3
+        var y3 = 0.5*(y1+y2) + 2*SELECTAREA*Math.sin(this.angle - Math.PI/2); // Calculate y3
 
         // create circle using three points
-        var circle = circleFromPoints(x1, y1, x2, y2, x3, y3);
+        var circle = circleFromPoints(x1, y1, x2, y2, x3, y3); // Calculate circle
 
-        var xc = circle.x;
-        var yc = circle.y;
+        var xc = circle.x;          // Set x centre of circle
+        var yc = circle.y;          // Set y centre of circle
 
         // only draw section between nodes
-        var startAngle = Math.atan2(y2-yc, x2-xc);
-        var endAngle = Math.atan2(y1-yc, x1-xc);
+        var startAngle = Math.atan2(y2-yc, x2-xc); // Calculate start angle
+        var endAngle = Math.atan2(y1-yc, x1-xc);   // Calculate end angle
 
-        ctx.beginPath();
-        ctx.arc(xc, yc, circle.radius, startAngle, endAngle);
-        ctx.stroke();
+        ctx.beginPath();            // Begin new path
+        ctx.arc(xc, yc, circle.radius, startAngle, endAngle); // Draw arc
+        ctx.stroke();               // Stroke arc
 
         // get coords of arc intersection with 'to' node
-        var alpha = Math.acos(RADIUS/(2*circle.radius)) - startAngle + Math.PI;
+        var alpha = Math.acos(RADIUS/(2*circle.radius)) - startAngle + Math.PI; // Calculate alpha
 
-        var xi = x2 + RADIUS*Math.cos(alpha);
-        var yi = y2 - RADIUS*Math.sin(alpha);
+        var xi = x2 + RADIUS*Math.cos(alpha); // Calculate xi
+        var yi = y2 - RADIUS*Math.sin(alpha); // Calculate yi
 
-        var beta = Math.atan2(yi-y2,xi-x2);
+        var beta = Math.atan2(yi-y2, xi-x2);  // Calculate beta
         
         // dynamically draw chevron
-        ctx.beginPath();
-        ctx.moveTo(xi, yi);
-        ctx.lineTo(xi+CHEVRON*Math.cos(beta-Math.PI/5), yi+CHEVRON*Math.sin(beta-Math.PI/5));
-        ctx.lineTo(xi+CHEVRON*Math.cos(beta+Math.PI/5), yi+CHEVRON*Math.sin(beta+Math.PI/5));
-        ctx.closePath();
-        ctx.stroke();
-        ctx.fill();
+        ctx.beginPath();            // Begin new path
+        ctx.moveTo(xi, yi);         // Move to intersection
+        ctx.lineTo(xi+CHEVRON*Math.cos(beta-Math.PI/5), yi+CHEVRON*Math.sin(beta-Math.PI/5)); // Draw first line of chevron
+        ctx.lineTo(xi+CHEVRON*Math.cos(beta+Math.PI/5), yi+CHEVRON*Math.sin(beta+Math.PI/5)); // Draw second line of chevron
+        ctx.closePath();            // Close path
+        ctx.stroke();               // Stroke chevron
+        ctx.fill();                 // Fill chevron
 
-        ctx.strokeStyle = BLACK; // revert colour to black
+        ctx.strokeStyle = BLACK;    // Revert colour to black
 
         // draw the label at the third point that was created
-        ctx.fillStyle = STATEFILL;
+        ctx.fillStyle = STATEFILL;  // Set fill style to state fill colour
             
-        var width = ctx.measureText(this.label).width;
+        var width = ctx.measureText(this.label).width; // Measure label width
 
-        ctx.fillRect(x3-width/2, y3-FONTSIZE+2, width, FONTSIZE+2);
+        ctx.fillRect(x3-width/2, y3-FONTSIZE+2, width, FONTSIZE+2); // Draw label background
 
-        ctx.fillStyle = BLACK;
+        ctx.fillStyle = BLACK;      // Set fill style to black
 
-        ctx.beginPath();
-        ctx.fillText(this.label, x3, y3);
-        ctx.stroke();
+        ctx.beginPath();            // Begin new path
+        ctx.fillText(this.label, x3, y3); // Draw label text
+        ctx.stroke();               // Stroke text
 
-        ctx.fillStyle = STATEFILL;
+        ctx.fillStyle = STATEFILL;  // Set fill style to state fill colour
       } else {
         if (this.id == startTid) { // start edge
-          var toX = this.toNode.x-RADIUS;
-          var toY = this.toNode.y;
-          var fromX = toX-RADIUS;
-          var fromY = toY;
-          var dx = RADIUS;
-          var dy = 0;
-          this.angle = Math.atan2(dy, dx);
+          var toX = this.toNode.x-RADIUS; // Calculate toX for start edge
+          var toY = this.toNode.y;        // Calculate toY for start edge
+          var fromX = toX-RADIUS;         // Calculate fromX for start edge
+          var fromY = toY;                // Calculate fromY for start edge
+          var dx = RADIUS;                // Set dx for start edge
+          var dy = 0;                     // Set dy for start edge
+          this.angle = Math.atan2(dy, dx); // Calculate angle for start edge
         } else { // edge between nodes
-          var toX = this.toNode.x;
-          var toY = this.toNode.y;
-          var fromX = this.fromNode.x;
-          var fromY = this.fromNode.y;
+          var toX = this.toNode.x;        // Get x coordinate of toNode
+          var toY = this.toNode.y;        // Get y coordinate of toNode
+          var fromX = this.fromNode.x;    // Get x coordinate of fromNode
+          var fromY = this.fromNode.y;    // Get y coordinate of fromNode
 
           // Calculates line angle between centres of each node
-          var dx = toX-fromX;
-          var dy = toY-fromY;
-          this.angle = Math.atan2(dy, dx);
+          var dx = toX-fromX;             // Calculate dx
+          var dy = toY-fromY;             // Calculate dy
+          this.angle = Math.atan2(dy, dx);// Calculate angle
 
           // 'Remove' portion of edge contained within nodes
-          fromX += Math.cos(this.angle)*RADIUS;
-          fromY += Math.sin(this.angle)*RADIUS;
-          toX -= Math.cos(this.angle)*RADIUS;
-          toY -= Math.sin(this.angle)*RADIUS;
+          fromX += Math.cos(this.angle)*RADIUS; // Adjust fromX
+          fromY += Math.sin(this.angle)*RADIUS; // Adjust fromY
+          toX -= Math.cos(this.angle)*RADIUS;   // Adjust toX
+          toY -= Math.sin(this.angle)*RADIUS;   // Adjust toY
         }
 
         // Draw connecting line
-        ctx.beginPath();
-        ctx.moveTo(fromX, fromY);
-        ctx.lineTo(toX, toY);
-        ctx.stroke();
+        ctx.beginPath();            // Begin new path
+        ctx.moveTo(fromX, fromY);   // Move to start point
+        ctx.lineTo(toX, toY);       // Draw line to end point
+        ctx.stroke();               // Stroke line
 
         // Draw chevron at end of edge
-        ctx.beginPath();
-        ctx.moveTo(toX, toY);
-        ctx.lineTo(toX-CHEVRON*Math.cos(this.angle - Math.PI/6), toY-CHEVRON*Math.sin(this.angle - Math.PI/6));
-        ctx.lineTo(toX-CHEVRON*Math.cos(this.angle + Math.PI/6), toY-CHEVRON*Math.sin(this.angle + Math.PI/6));
-        ctx.closePath();
-        ctx.stroke();
-        ctx.fill();
+        ctx.beginPath();            // Begin new path
+        ctx.moveTo(toX, toY);       // Move to end point
+        ctx.lineTo(toX-CHEVRON*Math.cos(this.angle - Math.PI/6), toY-CHEVRON*Math.sin(this.angle - Math.PI/6)); // Draw first line of chevron
+        ctx.lineTo(toX-CHEVRON*Math.cos(this.angle + Math.PI/6), toY-CHEVRON*Math.sin(this.angle + Math.PI/6)); // Draw second line of chevron
+        ctx.closePath();            // Close path
+        ctx.stroke();               // Stroke chevron
+        ctx.fill();                 // Fill chevron
 
-        ctx.strokeStyle = BLACK; // revert colour to black
-        ctx.fillStyle = STATEFILL;
+        ctx.strokeStyle = BLACK;    // Revert colour to black
+        ctx.fillStyle = STATEFILL;  // Set fill style to state fill colour
 
         if (this.fromNode != null) {
-          var width = ctx.measureText(this.label).width;
+          var width = ctx.measureText(this.label).width; // Measure label width
 
-          var x = (this.fromNode.x + this.toNode.x) / 2;
-          var y = (this.fromNode.y + this.toNode.y) / 2;
+          var x = (this.fromNode.x + this.toNode.x) / 2; // Calculate x for label
+          var y = (this.fromNode.y + this.toNode.y) / 2; // Calculate y for label
 
-          ctx.fillRect(x-width/2, y-FONTSIZE+2, width, FONTSIZE+2);
+          ctx.fillRect(x-width/2, y-FONTSIZE+2, width, FONTSIZE+2); // Draw label background
 
-          ctx.fillStyle = BLACK;
+          ctx.fillStyle = BLACK;    // Set fill style to black
 
-          ctx.beginPath();
-          ctx.fillText(this.label, x, y);
-          ctx.stroke();
+          ctx.beginPath();          // Begin new path
+          ctx.fillText(this.label, x, y); // Draw label text
+          ctx.stroke();             // Stroke text
 
-          ctx.fillStyle = STATEFILL;
+          ctx.fillStyle = STATEFILL;// Set fill style to state fill colour
         }
       }
   }
@@ -649,31 +655,31 @@ class Node {
   draw(ctx) {
     // Colour state red if highlighted
     if (this.id == highSid) {
-      ctx.strokeStyle = RED;
+      ctx.strokeStyle = RED;          // Set stroke style to red
     }
 
     // Draw state
-    ctx.beginPath();
-    ctx.arc(this.x, this.y, RADIUS, 0, 2*Math.PI);
-    ctx.fill();
-    ctx.stroke();
+    ctx.beginPath();                  // Begin new path
+    ctx.arc(this.x, this.y, RADIUS, 0, 2*Math.PI); // Draw circle representing state
+    ctx.fill();                       // Fill circle
+    ctx.stroke();                     // Stroke circle
 
     // Draw smaller circle inside to denote accept state
-    if (this.accept) {
-      ctx.beginPath();
-      ctx.arc(this.x, this.y, RADIUS-8, 0, 2*Math.PI);
-      ctx.fill();
-      ctx.stroke();
+    if (this.accept) {                // Check if state is an accept state
+      ctx.beginPath();                // Begin new path
+      ctx.arc(this.x, this.y, RADIUS-8, 0, 2*Math.PI); // Draw smaller circle inside state
+      ctx.fill();                     // Fill smaller circle
+      ctx.stroke();                   // Stroke smaller circle
     }
 
-    ctx.strokeStyle = BLACK; // revert colour to black
+    ctx.strokeStyle = BLACK;          // Revert colour to black
 
-    ctx.fillStyle = BLACK;
-    ctx.beginPath();
-    ctx.fillText(this.label, this.x, this.y+5);
-    ctx.stroke();
+    ctx.fillStyle = BLACK;            // Set fill style to black
+    ctx.beginPath();                  // Begin new path
+    ctx.fillText(this.label, this.x, this.y+5); // Draw state label
+    ctx.stroke();                     // Stroke text
 
-    ctx.fillStyle = STATEFILL;
+    ctx.fillStyle = STATEFILL;        // Set fill style to state fill colour
   }
 }
 
@@ -1285,6 +1291,8 @@ function edgeUnderMouse(xm, ym) {
  * @param {Number} y y-position of cursor
  * @returns {Number} Index of node, or -1 if no node present
  */
+
+// To detect mouse interaction and perform node operations based on events
 function nodeUnderMouse(x, y) {
   for (var i=nodes.length-1; i >= 0; i--) {
     var node = nodes[i];
