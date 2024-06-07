@@ -1105,6 +1105,10 @@ function getSymbols(label) {
 
 
 function isValidOr(input) {
+  for(let i = 0; i<input.length; i++){
+    if(input[i] == ' ' || input[i] == ',' || input[i] == EPSILON || SIGMA.includes(input[i])) continue;
+    else throw err;
+  }
   let valid = true;
   if (input != ""){
     if (input.startsWith(",") || input.endsWith(",")) {
@@ -1129,6 +1133,7 @@ function isValidOr(input) {
     throw err;
   }
 }
+
 
 /**
  * Create state transition table and accept states from
