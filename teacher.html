@@ -46,14 +46,16 @@
                         <a class="nav-link" href="./about.html">About</a>
                     </li>
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" onclick="
-                            addDropDownContents();
-                            ">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" onclick="addDropDownContents();">
                             Questions
                         </a>
-                        <ul class="dropdown-menu dropdown-menu-end"></ul>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li class="dropdown-item">
+                                <button type="button" class="btn btn-sm" onclick="clearAllQuestions()">Clear All Questions</button>
+                            </li>
+                        </ul>
                     </li>
-                </ul>
+                </ul>                
 
                 <form class="d-flex" role="search">
                     <!-- <input id="regexInput" class="form-control me-2" type="text" placeholder="Regular Expression" aria-label="Search"> -->

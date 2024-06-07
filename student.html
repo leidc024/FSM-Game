@@ -43,6 +43,7 @@
             <div class="btn-group">
                 <button onclick="
                     if(c===regexArr.length) return false;
+                    clearCanvas(); // Clear the canvas before adding new regex
                     addNewRegex(regexArr[++c]);
                     " id="regex-generator" class="btn btn-primary" type="button">Next Item</button>
             </div>

@@ -1443,7 +1443,6 @@ function comp() {
   }
 }
 
-
 function addNewRegex(userExpr) {
   regex.innerHTML = userExpr;
   userExpr = userExpr.replace(/U/g, "+");
@@ -1451,9 +1450,6 @@ function addNewRegex(userExpr) {
   answer.innerHTML = "Draw A Machine";
   answer.style.color = "FEF2B";
 }
-
-
-
 
 const canvas = document.getElementById('flat-canvas');
 const regex = document.getElementById('regex');
@@ -1471,6 +1467,11 @@ answer.innerHTML = "Draw A Machine";
 answer.style.color = "FEF2B";
 
 var state = null;
+
+// Function to clear the canvas
+function clearCanvas() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+}
 
 /**
  * Pressing a key
