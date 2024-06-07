@@ -1123,7 +1123,12 @@ function isValidOr(input) {
     }
   }
   if(valid){
-    return input.replace(/[ ]/g, '');
+    let final = input.replace(/[ ]/g, '');
+    for (let char of final)
+      if (!SIGMA.includes(char)) {
+        throw err;
+      }
+    return final;
   }
   else{
     throw err;
