@@ -100,8 +100,8 @@
             <!-- Styled redirects -->
             <div class="styled-redirects">
                 <div class="btn-group">
-                    <a href="../components/index.html" class="btn btn-btn-m" style="background-color: #ffd700; color: black;">Go to Home</a>
-                    <a href="../components/about.html" class="btn btn-btn-m" style="background-color: #ffd700; color: black;">Learn About Us</a>
+                    <a href="./index.html" class="btn btn-btn-m" style="background-color: #ffd700; color: black;">Go to Home</a>
+                    <a href="./about.html" class="btn btn-btn-m" style="background-color: #ffd700; color: black;">Learn About Us</a>
                 </div>
             </div>
 
@@ -125,11 +125,11 @@
     </div>
 
     <button class="sound-button" onclick="toggleMusic()">
-        <img src="../images/sound-off.png" alt="Sound Icon">
+        <img src="./sound-off.png" alt="Sound Icon">
     </button>
 
-    <audio id="background-music" loop autoplay>
-        <source src="../sound/bg.mp3" type="audio/mpeg">
+    <audio id="background-music" loop>
+        <source src="bg.mp3" type="audio/mpeg">
         
     </audio>
 
@@ -146,10 +146,10 @@
 
             if (audio.paused) {
                 audio.play();
-                button.src = '../images/sound.png'; // Change to a different image if desired
+                button.src = './sound.png'; // Change to a different image if desired
             } else {
                 audio.pause();
-                button.src = '../images/sound-off.png'; // Original image
+                button.src = './sound-off.png'; // Original image
             }
         }
     </script>
