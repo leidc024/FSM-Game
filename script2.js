@@ -1443,6 +1443,7 @@ function comp() {
   }
 }
 
+
 function addNewRegex(userExpr) {
   regex.innerHTML = userExpr;
   userExpr = userExpr.replace(/U/g, "+");
@@ -1467,11 +1468,6 @@ answer.innerHTML = "Draw A Machine";
 answer.style.color = "FEF2B";
 
 var state = null;
-
-// Function to clear the canvas
-function clearCanvas() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-}
 
 /**
  * Pressing a key

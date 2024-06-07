@@ -21,25 +21,11 @@
             right: 10px; /* Adjust right position as needed */
         }
 
-        ul.myUl {
-            display: inline-block;
+        ul.myUl{
+            display: inline-block; 
             text-align: left;
         }
 
-        .sound-button {
-            position: fixed;
-            bottom: 20px;
-            left: 20px;
-            background: none;
-            border: none;
-        }
-
-            .sound-button img {
-                width: 50px;
-                height: 50px;
-                filter: invert(1) brightness(2); /* Make the image white */
-                background: none;
-            }
     </style>
 </head>
 <body class="no-select">
@@ -57,11 +43,8 @@
             <div class="btn-group">
                 <button onclick="
                     if(c===regexArr.length) return false;
-                    clearCanvas(); // Clear the canvas before adding new regex
                     addNewRegex(regexArr[++c]);
-                    " id="regex-generator" class="btn btn-primary" type="button">
-                    Next Item
-                </button>
+                    " id="regex-generator" class="btn btn-primary" type="button">Next Item</button>
             </div>
 
             <p id="regex"></p>
@@ -74,9 +57,7 @@
                 <button onclick="
                 comp();
                 displayScore();
-                " id="fsm-check" class="btn btn-success" type="button">
-                    Evaluate
-                </button>
+                " id="fsm-check" class="btn btn-success" type="button">Evaluate</button>
             </div>
 
             <div class="btn-group-checkbox">
@@ -90,12 +71,12 @@
                 <button class="btn btn-primary dropdown-toggle" aria-expanded="false" onclick="
                     toggleDropdown();
                     addDropDownContents();
-                    ">
+                    " >
                     Questions
                 </button>
                 <ul class="dropdown-menu" id="dropdown-menu"></ul>
             </div>
-
+            
 
 
             <!-- Styled redirects -->
@@ -122,38 +103,24 @@
                 </div>
                 <button class="btn btn-danger" onclick="closeInstructions()">Exit</button>
             </div>
+
+            <!-- Credits -->
+            <div class="styled-redirects">
+                <div style="margin-top: 10px;">
+                    <p>Web design and refactoring by Dela Cruz, Figueroa, Nuñez, Vaflor.</p>
+                    <p>&copy; <a href="https://github.com/ldtalent/martink-How-to-build-Advanced-Web-Based-Canvas-Tool-for-Automata-Theory-Testing" style="color: #ffd700;">Martin K</a> for the original iteration.</p>
+                </div>
+            </div>
         </div>
     </div>
-
-    <button class="sound-button" onclick="toggleMusic()">
-        <img src="./sound-off.png" alt="Sound Icon">
-    </button>
-
-    <audio id="background-music" loop>
-        <source src="bg.mp3" type="audio/mpeg">
-        
-    </audio>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" 
             integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-    <script src="script2.js"></script>
+    <script  src="script2.js" ></script>
     <script>
         displayScore();
         addNewRegex(regexArr[c]);
-
-        function toggleMusic() {
-            var audio = document.getElementById('background-music');
-            var button = document.querySelector('.sound-button img');
-
-            if (audio.paused) {
-                audio.play();
-                button.src = './sound.png'; // Change to a different image if desired
-            } else {
-                audio.pause();
-                button.src = './sound-off.png'; // Original image
-            }
-        }
     </script>
-
+     
 </body>
 </html>
